@@ -65,6 +65,61 @@
 
         <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
 
+            
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3 text-brand-dark-blue">Get a Personalized Recommendation</h2>
+                <p class="text-gray-700 mb-4">
+                    Not sure which to pick? Describe your store, and our AI analyst will recommend the best app for your
+                    specific needs based on the data above.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="storeStage" class="block text-sm font-medium text-gray-700">What's your store's
+                            stage?</label>
+                        <select id="storeStage" name="storeStage"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
+                            <option>New Store (Just launched)</option>
+                            <option>Growing Store (Under 100 orders/mo)</option>
+                            <option>Established Store (Over 100 orders/mo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="primaryGoal" class="block text-sm font-medium text-gray-700">What's your primary
+                            goal?</label>
+                        <select id="primaryGoal" name="primaryGoal"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
+                            <option>Just testing, want $0 cost</option>
+                            <option>Build a large affiliate network</option>
+                            <option>Encourage customer-to-customer referrals</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="expectedOrders" class="block text-sm font-medium text-gray-700">Expected monthly
+                            affiliate orders?</label>
+                        <input type="number" id="expectedOrders" name="expectedOrders"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
+                            placeholder="e.g., 50">
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button id="analyzeBtn"
+                        class="bg-blue-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-200">
+                        Analyze
+                    </button>
+                </div>
+
+                <div id="recommendationOutput" class="mt-6 bg-gray-50 rounded-lg p-6 hidden">
+                    <div id="loadingSpinner" class="flex justify-center items-center">
+                        <div class="spinner"></div>
+                        <p class="ml-4 text-gray-600">Analyzing...</p>
+                    </div>
+                    <div id="recommendationText" class="text-gray-800 prose max-w-none"></div>
+                </div>
+            </section>
+
             <section class="md:col-span-1 bg-white rounded-lg shadow-md p-6">
                 <h2 class="text-2xl font-bold mb-3">Free vs. Paid: The Starting Line</h2>
                 <p class="text-gray-700 mb-4">
@@ -237,59 +292,6 @@
                         price and user-based model make it an outlier.
                     </li>
                 </ul>
-            </section>
-
-            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
-                <h2 class="text-2xl font-bold mb-3 text-brand-dark-blue">Get a Personalized Recommendation</h2>
-                <p class="text-gray-700 mb-4">
-                    Not sure which to pick? Describe your store, and our AI analyst will recommend the best app for your
-                    specific needs based on the data above.
-                </p>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label for="storeStage" class="block text-sm font-medium text-gray-700">What's your store's
-                            stage?</label>
-                        <select id="storeStage" name="storeStage"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
-                            <option>New Store (Just launched)</option>
-                            <option>Growing Store (Under 100 orders/mo)</option>
-                            <option>Established Store (Over 100 orders/mo)</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="primaryGoal" class="block text-sm font-medium text-gray-700">What's your primary
-                            goal?</label>
-                        <select id="primaryGoal" name="primaryGoal"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
-                            <option>Just testing, want $0 cost</option>
-                            <option>Build a large affiliate network</option>
-                            <option>Encourage customer-to-customer referrals</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="expectedOrders" class="block text-sm font-medium text-gray-700">Expected monthly
-                            affiliate orders?</label>
-                        <input type="number" id="expectedOrders" name="expectedOrders"
-                            class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
-                            placeholder="e.g., 50">
-                    </div>
-                </div>
-
-                <div class="mt-6 text-center">
-                    <button id="analyzeBtn"
-                        class="bg-blue-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-200">
-                        Analyze
-                    </button>
-                </div>
-
-                <div id="recommendationOutput" class="mt-6 bg-gray-50 rounded-lg p-6 hidden">
-                    <div id="loadingSpinner" class="flex justify-center items-center">
-                        <div class="spinner"></div>
-                        <p class="ml-4 text-gray-600">Analyzing...</p>
-                    </div>
-                    <div id="recommendationText" class="text-gray-800 prose max-w-none"></div>
-                </div>
             </section>
 
         </main>
