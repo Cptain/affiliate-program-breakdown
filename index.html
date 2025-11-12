@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopify Referral App Fee Comparison</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif']
+                    },
+                    colors: {
+                        'brand-red': '#FF6B6B',
+                        'brand-yellow': '#FFD166',
+                        'brand-green': '#06D6A0',
+                        'brand-blue': '#118AB2',
+                        'brand-dark-blue': '#073B4C'
+                    }
+                }
+            }
+        }
+
+        /* Loading spinner animation */
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border-left-color: #118AB2;
+            /* brand-blue */
+            animation: spin 1s ease infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 text-brand-dark-blue">
+
+    <div class="max-w-7xl mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-brand-dark-blue mb-2">Shopify Referral App Showdown</h1>
+            <p class="text-lg md:text-xl text-gray-600">A Cost & Feature Analysis for Your Ecommerce Store</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+
+            <section class="md:col-span-1 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">Free vs. Paid: The Starting Line</h2>
+                <p class="text-gray-700 mb-4">
+                    The first major difference is cost of entry. Half of the apps we analyzed offer a $0 starter plan,
+                    while the other half require a paid subscription from day one.
+                </p>
+                <div class="chart-container"
+                    style="position: relative; height: 250px; max-height: 250px; width: 100%; max-width: 250px; margin: auto;">
+                    <canvas id="freeVsPaidChart"></canvas>
+                </div>
+                <p class="text-center text-gray-600 mt-4">
+                    This 50/50 split highlights two different philosophies: "start free and grow" vs. "premium features
+                    from the start."
+                </p>
+            </section>
+
+            <section class="md:col-span-1 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">The $0 Plan Champions</h2>
+                <p class="text-gray-700 mb-4">
+                    For the apps with free plans, the limitations vary significantly. The two biggest factors are
+                    platform commission fees (a percentage of *your* referral sale paid to the app) and affiliate
+                    limits.
+                </p>
+                <div class="chart-container"
+                    style="position: relative; height: 250px; max-height: 250px; width: 100%; max-width: 600px; margin: auto;">
+                    <canvas id="freeFeesChart"></canvas>
+                </div>
+                <p class="text-center text-gray-600 mt-4">
+                    GoAffPro and UpPromote both start with a 0% platform fee, making them truly free to start. Referral
+                    Rocket's free plan includes a 5% commission.
+                </p>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">Understanding the Pricing Models</h2>
+                <p class="text-gray-700 mb-4">
+                    "Cost" isn't just the monthly price. Apps monetize in different ways. Understanding these models is
+                    key to projecting your future costs as you scale.
+                </p>
+                <div class="flex flex-col md:flex-row justify-around gap-4 mt-4">
+                    <div class="flex-1 bg-gray-50 rounded-lg p-4 border-l-4 border-brand-red">
+                        <h3 class="text-lg font-semibold text-brand-dark-blue">1. Platform Commission</h3>
+                        <p class="text-gray-700 text-sm">You pay the app a percentage of every sale an affiliate
+                            generates. Your costs scale directly with your referral revenue.</p>
+                        <p class="text-gray-700 text-sm mt-2 font-semibold">Examples: Enlistly, Referral Rocket</p>
+                    </div>
+                    <div class="flex-1 bg-gray-50 rounded-lg p-4 border-l-4 border-brand-yellow">
+                        <h3 class="text-lg font-semibold text-brand-dark-blue">2. Order / User Limits</h3>
+                        <p class="text-gray-700 text-sm">You pay a flat monthly fee for a set number of referral orders
+                            or program users. Once you pass the limit, you must upgrade.</p>
+                        <p class="text-gray-700 text-sm mt-2 font-semibold">Examples: GrowthHero, Referral Factory</p>
+                    </div>
+                    <div class="flex-1 bg-gray-50 rounded-lg p-4 border-l-4 border-brand-blue">
+                        <h3 class="text-lg font-semibold text-brand-dark-blue">3. Feature & Affiliate Tiers</h3>
+                        <p class="text-gray-700 text-sm">The free or entry-level plan has 0% commission but limits
+                            features or the number of affiliates you can have. You pay to unlock more power.</p>
+                        <p class="text-gray-700 text-sm mt-2 font-semibold">Examples: GoAffPro, UpPromote</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">Full Comparison: Starting Cost vs. Starting Fee</h2>
+                <p class="text-gray-700 mb-4">
+                    This chart compares the two most important starting metrics for all six apps: the monthly
+                    subscription cost and the platform commission fee on their entry-level plans.
+                </p>
+                <div class="chart-container"
+                    style="position: relative; height: 400px; max-height: 400px; width: 100%; max-width: 900px; margin: auto;">
+                    <canvas id="allAppsChart"></canvas>
+                </div>
+                <p class="text-gray-600 mt-4">
+                    Notice the trade-offs: Enlistly has a low $9/mo entry price, but a high 10% platform fee. GoAffPro
+                    and UpPromote are $0 on both. GrowthHero and Referral Factory have the highest entry prices but 0%
+                    platform fees.
+                </p>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">At-a-Glance: What's the Catch?</h2>
+                <p class="text-gray-700 mb-4">
+                    Every plan has a "catch" or a limit designed to make you upgrade. Here are the key limitations on
+                    the entry-level plan for each app.
+                </p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left table-auto">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="p-3 text-sm font-semibold text-gray-700">App</th>
+                                <th class="p-3 text-sm font-semibold text-gray-700">Starting Price</th>
+                                <th class="p-3 text-sm font-semibold text-gray-700">Platform Fee</th>
+                                <th class="p-3 text-sm font-semibold text-gray-700">Key Limitation on Starter Plan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">GoAffPro</td>
+                                <td class="p-3 font-bold text-brand-green">$0/mo</td>
+                                <td class="p-3 font-bold text-brand-green">0%</td>
+                                <td class="p-3 text-gray-700">Limits advanced features (MLM, custom branding). Affiliate
+                                    & order limits are unlimited.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">UpPromote</td>
+                                <td class="p-3 font-bold text-brand-green">$0/mo</td>
+                                <td class="p-3 font-bold text-brand-green">0%</td>
+                                <td class="p-3 text-gray-700">Limited to 200 affiliates.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">Referral Rocket</td>
+                                <td class="p-3 font-bold text-brand-green">$0/mo</td>
+                                <td class="p-3 font-bold text-brand-red">5%</td>
+                                <td class="p-3 text-gray-700">Limited to 50 affiliates AND a 5% platform fee.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">Enlistly</td>
+                                <td class="p-3 font-bold text-brand-yellow">$9/mo</td>
+                                <td class="p-3 font-bold text-brand-red">10%</td>
+                                <td class="p-3 text-gray-700">High 10% platform fee. Must upgrade to $99/mo to remove
+                                    fees.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">GrowthHero</td>
+                                <td class="p-3 font-bold text-brand-yellow">$49/mo</td>
+                                <td class="p-3 font-bold text-brand-green">0%</td>
+                                <td class="p-3 text-gray-700">Limited to 100 paid affiliate *orders* per month.</td>
+                            </tr>
+                            <tr class="border-b">
+                                <td class="p-3 font-semibold text-brand-blue">Referral Factory</td>
+                                <td class="p-3 font-bold text-brand-yellow">$95/mo</td>
+                                <td class="p-3 font-bold text-brand-green">0%</td>
+                                <td class="p-3 text-gray-700">Different model. Limited to 1,000 *program users*
+                                    (referrers). High entry price.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3">How to Choose: Which Model is For You?</h2>
+                <p class="text-gray-700 mb-4">
+                    Your choice depends on your business stage, volume, and budget.
+                </p>
+                <ul class="list-disc list-inside space-y-3 mt-4 text-gray-700">
+                    <li>
+                        <span class="font-semibold text-brand-dark-blue">If you're a new store or just testing:</span>
+                        Start with <strong class="text-brand-blue">GoAffPro</strong> or <strong
+                            class="text-brand-blue">UpPromote</strong>. Their $0, 0% fee plans let you build a program
+                        with zero financial risk. GoAffPro is more generous with unlimited affiliates.
+                    </li>
+                    <li>
+                        <span class="font-semibold text-brand-dark-blue">If you expect high referral sales
+                            volume:</span>
+                        Avoid platform commission models. A flat fee is better. <strong
+                            class="text-brand-blue">GoAffPro's Premium plan ($24/mo)</strong> or <strong
+                            class="text-brand-blue">Enlistly's Enterprise plan ($99/mo)</strong> offer 0% fees and high
+                        limits.
+                    </li>
+                    <li>
+                        <span class="font-semibold text-brand-dark-blue">If your referral orders are few but
+                            high-value:</span>
+                        A model like <strong class="text-brand-blue">GrowthHero</strong> could be perfect. You pay for
+                        the *number* of orders, not their dollar value, and you get 0% platform fees.
+                    </li>
+                    <li>
+                        <span class="font-semibold text-brand-dark-blue">If you're building a "refer-a-friend" program
+                            (not just affiliates):</span>
+                        <strong class="text-brand-blue">Referral Factory</strong> is built for this, but its high entry
+                        price and user-based model make it an outlier.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="md:col-span-2 bg-white rounded-lg shadow-md p-6">
+                <h2 class="text-2xl font-bold mb-3 text-brand-dark-blue">Get a Personalized Recommendation</h2>
+                <p class="text-gray-700 mb-4">
+                    Not sure which to pick? Describe your store, and our AI analyst will recommend the best app for your
+                    specific needs based on the data above.
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="storeStage" class="block text-sm font-medium text-gray-700">What's your store's
+                            stage?</label>
+                        <select id="storeStage" name="storeStage"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
+                            <option>New Store (Just launched)</option>
+                            <option>Growing Store (Under 100 orders/mo)</option>
+                            <option>Established Store (Over 100 orders/mo)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="primaryGoal" class="block text-sm font-medium text-gray-700">What's your primary
+                            goal?</label>
+                        <select id="primaryGoal" name="primaryGoal"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm">
+                            <option>Just testing, want $0 cost</option>
+                            <option>Build a large affiliate network</option>
+                            <option>Encourage customer-to-customer referrals</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="expectedOrders" class="block text-sm font-medium text-gray-700">Expected monthly
+                            affiliate orders?</label>
+                        <input type="number" id="expectedOrders" name="expectedOrders"
+                            class="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-brand-blue focus:border-brand-blue sm:text-sm"
+                            placeholder="e.g., 50">
+                    </div>
+                </div>
+
+                <div class="mt-6 text-center">
+                    <button id="analyzeBtn"
+                        class="bg-blue-500 text-white font-bold py-3 px-8 rounded-lg shadow-md hover:bg-opacity-90 transition-all duration-200">
+                        Analyze
+                    </button>
+                </div>
+
+                <div id="recommendationOutput" class="mt-6 bg-gray-50 rounded-lg p-6 hidden">
+                    <div id="loadingSpinner" class="flex justify-center items-center">
+                        <div class="spinner"></div>
+                        <p class="ml-4 text-gray-600">Analyzing...</p>
+                    </div>
+                    <div id="recommendationText" class="text-gray-800 prose max-w-none"></div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        (function () {
+            const chartColors = {
+                red: '#FF6B6B',
+                yellow: '#FFD166',
+                green: '#06D6A0',
+                blue: '#118AB2',
+                darkBlue: '#073B4C'
+            };
+
+            const tooltipTitleCallback = function (tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            };
+
+            const commonTooltipOptions = {
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('freeVsPaidChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['$0 Starter Plan', 'Paid-Only Plans'],
+                    datasets: [{
+                        data: [3, 3],
+                        backgroundColor: [chartColors.green, chartColors.yellow],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('freeFeesChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['GoAffPro', 'UpPromote', 'Referral Rocket'],
+                    datasets: [{
+                        label: 'Free Plan Platform Fee (%)',
+                        data: [0, 0, 5],
+                        backgroundColor: [chartColors.green, chartColors.green, chartColors.green],
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return value + '%'
+                                }
+                            }
+                        }
+                    },
+                    ...commonTooltipOptions
+                }
+            });
+
+            new Chart(document.getElementById('allAppsChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['GoAffPro', 'UpPromote', 'GrowthHero', 'Enlistly', 'Referral Rocket', ['Referral', 'Factory']],
+                    datasets: [
+                        {
+                            label: 'Starting Monthly Cost ($)',
+                            data: [0, 0, 49, 9, 0, 95],
+                            backgroundColor: [chartColors.green, chartColors.green, chartColors.green, chartColors.green, chartColors.green, chartColors.green],
+                        },
+                        {
+                            label: 'Starting Platform Fee (%)',
+                            data: [0, 0, 0, 10, 5, 0],
+                            backgroundColor: chartColors.blue,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    },
+                    ...commonTooltipOptions
+                }
+            });
+
+            const analyzeBtn = document.getElementById('analyzeBtn');
+            const recommendationOutput = document.getElementById('recommendationOutput');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const recommendationText = document.getElementById('recommendationText');
+
+            const storeStageInput = document.getElementById('storeStage');
+            const primaryGoalInput = document.getElementById('primaryGoal');
+            const expectedOrdersInput = document.getElementById('expectedOrders');
+
+            // Simple markdown to HTML converter
+            function markdownToHTML(markdown) {
+                let html = markdown;
+                
+                // Convert bold: **text** to <strong>text</strong>
+                html = html.replace(/\*\*(.+?)\*\*/g, '<strong class="font-bold text-brand-dark-blue">$1</strong>');
+                
+                // Convert italic: *text* to <em>text</em>
+                html = html.replace(/\*(.+?)\*/g, '<em class="italic">$1</em>');
+                
+                // Convert headers
+                html = html.replace(/^### (.+)$/gm, '<h3 class="text-lg font-bold text-brand-dark-blue mt-4 mb-2">$1</h3>');
+                html = html.replace(/^## (.+)$/gm, '<h2 class="text-xl font-bold text-brand-dark-blue mt-4 mb-2">$1</h2>');
+                html = html.replace(/^# (.+)$/gm, '<h1 class="text-2xl font-bold text-brand-dark-blue mt-4 mb-2">$1</h1>');
+                
+                // Convert bullet points to list items
+                const lines = html.split('\n');
+                let inList = false;
+                let processedLines = [];
+                
+                for (let i = 0; i < lines.length; i++) {
+                    const line = lines[i];
+                    const bulletMatch = line.match(/^[\s]*[-*]\s+(.+)$/);
+                    
+                    if (bulletMatch) {
+                        if (!inList) {
+                            processedLines.push('<ul class="list-disc list-inside space-y-2 my-3 ml-4">');
+                            inList = true;
+                        }
+                        processedLines.push(`<li class="text-gray-700">${bulletMatch[1]}</li>`);
+                    } else {
+                        if (inList) {
+                            processedLines.push('</ul>');
+                            inList = false;
+                        }
+                        processedLines.push(line);
+                    }
+                }
+                
+                if (inList) {
+                    processedLines.push('</ul>');
+                }
+                
+                html = processedLines.join('\n');
+                
+                // Convert line breaks to paragraphs
+                html = html.split('\n\n').map(para => {
+                    para = para.trim();
+                    if (para && !para.startsWith('<')) {
+                        return `<p class="text-gray-700 mb-3">${para}</p>`;
+                    }
+                    return para;
+                }).join('\n');
+                
+                return html;
+            }
+
+            // Exponential backoff function for API retries
+            async function fetchWithBackoff(url, options, retries = 3, delay = 1000) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        if (response.status === 429 && retries > 0) {
+                            // Throttled, wait and retry
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                        }
+                        throw new Error(`API Error: ${response.statusText}`);
+                    }
+                    return response.json();
+                } catch (error) {
+                    if (retries > 0) {
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        return fetchWithBackoff(url, options, retries - 1, delay * 2);
+                    }
+                    throw error;
+                }
+            }
+
+            async function getRecommendation() {
+                const storeStage = storeStageInput.value;
+                const primaryGoal = primaryGoalInput.value;
+                const expectedOrders = expectedOrdersInput.value || "a few"; // Default value if empty
+
+                if (!storeStage || !primaryGoal) {
+                    recommendationText.innerHTML = '<p class="text-gray-700">Please fill out all fields to get a recommendation.</p>';
+                    recommendationOutput.classList.remove('hidden');
+                    loadingSpinner.classList.add('hidden');
+                    recommendationText.classList.remove('hidden');
+                    return;
+                }
+
+                // Show loading state
+                recommendationOutput.classList.remove('hidden');
+                loadingSpinner.classList.remove('hidden');
+                recommendationText.classList.add('hidden');
+                analyzeBtn.disabled = true;
+                analyzeBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+                const systemPrompt = `
+You are an expert Shopify App analyst. Your job is to help a store owner choose the best referral/affiliate app from the list below based on their specific needs.
+
+Here is the data on the six apps:
+
+1.  **GoAffPro**:
+    * Starting Price: $0/mo
+    * Platform Fee: 0%
+    * Limits: Unlimited affiliates/orders on free plan. Free plan locks some advanced features (MLM, custom branding).
+    * Premium Plan: $24/mo for 0% fee and advanced features.
+    * Best for: New stores, testing, or those wanting a powerful free option.
+
+2.  **UpPromote**:
+    * Starting Price: $0/mo
+    * Platform Fee: 0%
+    * Limits: Limited to 200 affiliates on free plan.
+    * Best for: New stores, testing.
+
+3.  **Referral Rocket**:
+    * Starting Price: $0/mo
+    * Platform Fee: 5%
+    * Limits: 50 affiliates AND 5% platform fee on free plan.
+    * Note: Commission-based.
+
+4.  **Enlistly**:
+    * Starting Price: $9/mo
+    * Platform Fee: 10%
+    * Limits: High 10% platform fee.
+    * Premium Plan: $99/mo to remove fees.
+    * Note: Commission-based.
+
+5.  **GrowthHero**:
+    * Starting Price: $49/mo
+    * Platform Fee: 0%
+    * Limits: Limited to 100 paid affiliate *orders* per month on starter plan.
+    * Best for: Stores with few, high-value orders.
+
+6.  **Referral Factory**:
+    * Starting Price: $95/mo
+    * Platform Fee: 0%
+    * Limits: Limited to 1,000 *program users* (referrers). High entry price.
+    * Best for: True customer-to-customer "refer-a-friend" programs, not for large affiliate networks.
+
+Your task is to receive the user's store profile, analyze it against this data, and provide a single, concise recommendation.
+1.  State the single best app for them.
+2.  Provide a 2-3 sentence explanation for *why* it's the best choice, directly referencing their inputs and the app's fee structure/limits.
+3.  Mention one "runner-up" app and briefly explain why it's also a good consideration.
+4.  Be friendly, concise, and analytical.
+`;
+
+                const userQuery = `
+Here is my store profile:
+-   My store stage is: "${storeStage}"
+-   My primary goal is: "${primaryGoal}"
+-   I expect about: "${expectedOrders}" affiliate orders per month.
+
+Please provide your recommendation.
+`;
+
+                const apiKey = "AIzaSyC-_cVgeJEcdTW-j_O5nzlbQ2_zmsdnH-w"; // API key is handled by the environment
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: [{ parts: [{ text: userQuery }] }],
+                    systemInstruction: {
+                        parts: [{ text: systemPrompt }]
+                    },
+                };
+
+                try {
+                    const result = await fetchWithBackoff(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const candidate = result.candidates?.[0];
+                    if (candidate && candidate.content?.parts?.[0]?.text) {
+                        const text = candidate.content.parts[0].text;
+                        recommendationText.innerHTML = markdownToHTML(text);
+                    } else {
+                        throw new Error("Invalid response structure from API.");
+                    }
+
+                } catch (error) {
+                    console.error("Error fetching recommendation:", error);
+                    recommendationText.innerHTML = '<p class="text-red-600">Sorry, an error occurred while generating your recommendation. Please try again later.</p>';
+                } finally {
+                    // Show results, hide loading
+                    loadingSpinner.classList.add('hidden');
+                    recommendationText.classList.remove('hidden');
+                    analyzeBtn.disabled = false;
+                    analyzeBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                }
+            }
+
+            analyzeBtn.addEventListener('click', getRecommendation);
+
+
+        })();
+    </script>
+
+</body>
+
+</html>
